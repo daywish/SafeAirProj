@@ -17,7 +17,7 @@ namespace SafeAirProj.Models
         public int BuildingId { get; set; }
         public string OwnerId { get; set; }
         public string BuildingName { get; set; }
-        public string BuildingAddres { get; set; }
+        public string BuildingAddress { get; set; }
 
         public virtual ApplicationUser Owner { get; set; }
         public virtual ICollection<Floors> Floors { get; set; }

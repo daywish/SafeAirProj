@@ -44,7 +44,7 @@ namespace SafeAirProj.Data
                 entity.HasKey(e => e.BuildingId)
                     .HasName("PK__Building__5463CDC423ED712C");
 
-                entity.Property(e => e.BuildingAddres)
+                entity.Property(e => e.BuildingAddress)
                     .IsRequired()
                     .HasMaxLength(100);
 
