@@ -11,6 +11,10 @@ import { BuildingsList } from './components/Buildings';
 import { BuildingAdding } from './components/BuildingsAdding';
 import { FloorList } from './components/Floors';
 import { FloorAdding } from './components/FloorsAdding';
+import { ConditionersList } from './components/Conditioners';
+import { ConditionerAdding } from './components/ConditionerAdding';
+import { RoomList } from './components/Rooms';
+import { RoomAdding } from './components/RoomAdding';
 
 import './custom.css'
 
@@ -29,6 +33,10 @@ export default class App extends Component {
          <AuthorizeRoute path='/buildings/add' component={BuildingAdding} />
          <AuthorizeRoute exact path='/buildings/:id/floors' exact component={FloorList} />
          <AuthorizeRoute exact path='/buildings/:id/floors/add' component={FloorAdding} />
+         <AuthorizeRoute exact path='/conditioners' component={ConditionersList} />
+         <AuthorizeRoute exact path='/conditioners/add' component={ConditionerAdding} />
+         <AuthorizeRoute exact path='/buildings/:id/floors/:id/rooms' exact component={RoomList} />
+         <AuthorizeRoute exact path='/buildings/:id/floors/:id/rooms/add' component={RoomAdding} />
         </Switch>
       </Layout>
     );

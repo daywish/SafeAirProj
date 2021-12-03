@@ -30,12 +30,6 @@ namespace SafeAirProj.Controllers
             _logger = logger;
         }
 
-        [HttpGet("{BuildingId:int}")]
-        public IActionResult GetBuilding(int BuildingId)
-        {
-            return Ok(BuildingId);
-        }
-
         [HttpGet]
         public async Task<IEnumerable<Buildings>> Get()
         {
@@ -69,7 +63,7 @@ namespace SafeAirProj.Controllers
                 await _context.SaveChangesAsync();
                 return Ok(input);
             }
-            return NotFound();
+            return BadRequest();
         }
 
         [HttpDelete("{Id:int}")]

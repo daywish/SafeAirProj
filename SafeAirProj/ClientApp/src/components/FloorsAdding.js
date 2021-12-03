@@ -88,8 +88,8 @@ export class FloorAdding extends React.Component {
         return(
             <>
             <form
-                name="regionForm"
-                className="regionForm mt-3"
+                name="floorForm"
+                className="floorForm mt-3"
                 onSubmit={async(event)=> {
                     await this.floorSubmit(event);
                 }}
