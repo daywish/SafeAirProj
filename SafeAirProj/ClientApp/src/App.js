@@ -9,6 +9,8 @@ import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizat
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 import { BuildingsList } from './components/Buildings';
 import { BuildingAdding } from './components/BuildingsAdding';
+import { FloorList } from './components/Floors';
+import { FloorAdding } from './components/FloorsAdding';
 
 import './custom.css'
 
@@ -25,6 +27,8 @@ export default class App extends Component {
          <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
          <AuthorizeRoute exact path='/buildings' component={BuildingsList} />
          <AuthorizeRoute path='/buildings/add' component={BuildingAdding} />
+         <AuthorizeRoute exact path='/buildings/:id/floors' exact component={FloorList} />
+         <AuthorizeRoute exact path='/buildings/:id/floors/add' component={FloorAdding} />
         </Switch>
       </Layout>
     );
