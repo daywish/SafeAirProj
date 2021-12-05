@@ -64,7 +64,6 @@ export class BuildingsList extends Component {
                     {buildings.map(building => <tr key={building.BuildingId}>
                         <td>{building.BuildingName}</td>
                         <td>{building.BuildingAddress}</td>
-                        <td><button className="btn btn-outline-dark" onClick={async () => { await this.onRemoveBuilding(building); } }>Видалити</button></td>
                         <td><Link
                             className="btn btn-outline-primary"
                             role="button"
@@ -76,6 +75,7 @@ export class BuildingsList extends Component {
                             Переглянути поверхи
                         </Link>
                         </td>
+                        <td><button className="btn btn-outline-dark" onClick={async () => { await this.onRemoveBuilding(building); } }>Видалити</button></td>
                     </tr>
 
 

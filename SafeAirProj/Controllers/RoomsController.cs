@@ -87,5 +87,41 @@ namespace SafeAirProj.Controllers
             }
             return BadRequest();
         }
+
+        public class ChangeInputModel
+        {
+            public int RoomNumber { get; set; }
+            public double RoomTemperature { get; set; }
+            public double RoomWetness { get; set; }
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> Patch(int floorId, [FromBody] ChangeInputModel input)
+        {
+            if(input!=null)
+            {
+                if (input.RoomNumber == 0)
+                {
+                    List<Rooms> rooms = await _context.Rooms.Where(i => i.FloorId == floorId).ToListAsync();
+                    foreach (var room in rooms)
+                    {
+                        room.RoomTemperature = input.RoomTemperature;
+                        room.RoomWetness = input.RoomWetness;
+                    }
+                    await _context.SaveChangesAsync();
+                    return Ok(input);
+                }
+                else
+                {
+                    Rooms room = await _context.Rooms.FirstOrDefaultAsync(i => i.FloorId == floorId && i.RoomNumber == input.RoomNumber);
+                    room.RoomTemperature = input.RoomTemperature;
+                    room.RoomWetness = input.RoomWetness;
+                    await _context.SaveChangesAsync();
+                    return Ok(input);
+                }
+
+            }
+            return BadRequest(input);
+        }
     }
 }

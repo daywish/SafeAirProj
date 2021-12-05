@@ -127,8 +127,10 @@ export class ConditionerAdding extends React.Component {
                                     <input className="form-control valid"
                                         id="Input.ServiceTime"
                                         ref="serviceTime"
-                                        type="text"
+                                        type="time"
                                         size="100"
+                                        min="00:01"
+                                        max="01:30"
                                         placeholder="обслуговування"
                                         onChange={this.handleChange.bind(this, "serviceTime")}
                                         value={this.state.fields["serviceTime"]}
