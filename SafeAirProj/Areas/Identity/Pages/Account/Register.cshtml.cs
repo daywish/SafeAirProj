@@ -12,7 +12,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SafeAirProj.Data;
 using SafeAirProj.Models;
 
 namespace SafeAirProj.Areas.Identity.Pages.Account
@@ -77,6 +79,7 @@ namespace SafeAirProj.Areas.Identity.Pages.Account
             {
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                var roleResult = await _userManager.AddToRoleAsync(user, "user");
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
