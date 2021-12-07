@@ -53,37 +53,60 @@ export class NavMenu extends Component {
       this.state.linkCounter="/emploees";
       this.state.nameFetch="Requests";
       this.state.linkFetch="/requests";
+      return (
+        <header>
+          <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+            <Container>
+              <NavbarBrand tag={Link} to="/">SafeAirProj</NavbarBrand>
+              <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
+              <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
+                <ul className="navbar-nav flex-grow">
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to={this.state.linkCounter}>{this.state.nameCounter}</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to={this.state.linkFetch}>{this.state.nameFetch}</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/conditioners">Conditioners</NavLink>
+                  </NavItem>
+                  <LoginMenu>
+                  </LoginMenu>
+                </ul>
+              </Collapse>
+            </Container>
+          </Navbar>
+        </header>
+      );
+    } else {
+      return (
+        <header>
+          <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+            <Container>
+              <NavbarBrand tag={Link} to="/">SafeAirProj</NavbarBrand>
+              <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
+              <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
+                <ul className="navbar-nav flex-grow">
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/buildings">Buildings</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/conditioners">Conditioners</NavLink>
+                  </NavItem>
+                  <LoginMenu>
+                  </LoginMenu>
+                </ul>
+              </Collapse>
+            </Container>
+          </Navbar>
+        </header>
+      );
     }
-    return (
-      <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
-          <Container>
-            <NavbarBrand tag={Link} to="/">SafeAirProj</NavbarBrand>
-            <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-            <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-              <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to={this.state.linkCounter}>{this.state.nameCounter}</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to={this.state.linkFetch}>{this.state.nameFetch}</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/buildings">Buildings</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/conditioners">Conditioners</NavLink>
-                </NavItem>
-                <LoginMenu>
-                </LoginMenu>
-              </ul>
-            </Collapse>
-          </Container>
-        </Navbar>
-      </header>
-    );
   }
 }

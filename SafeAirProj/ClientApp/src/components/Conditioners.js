@@ -12,7 +12,8 @@ export class ConditionersList extends Component {
         this.state = {
             conditioners: [],
             loading: true,
-            path: this.props.location.pathname
+            path: this.props.location.pathname,
+            admin: false
         }
     }
 
@@ -38,34 +39,58 @@ export class ConditionersList extends Component {
 
     componentDidMount() {
         this.loadData();
+        this.loadUser();
     }
 
     render() {
         let conditioners = this.state.conditioners;
-
-        return (
-            <>
-            <h2 className="text-center">Наявні кондиціонери</h2><hr /><Link to="/conditioners/add" className="btn btn-primary mx-3" role="button">Додати кондиціонер</Link><table className='table table-striped text-center mt-3' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>Назва</th>
-                        <th>Ціна</th>
-                        <th>Час обслуговування</th>
-                        <th colSpan="2">Дії</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {conditioners.map(conditioner => <tr key={conditioner.ConditionerId}>
-                        <td>{conditioner.ConditionerName}</td>
-                        <td>{conditioner.ConditionerCost}</td>
-                        <td>{conditioner.ServiceTime}</td>
-                        <td><button className="btn btn-outline-dark" onClick={async () => { await this.onRemoveConditioner(conditioner); } }>Видалити</button></td>
-                    </tr>
-                    )}
-                </tbody>
-            </table>
-            </>
-        );
+        if(this.state.admin==true){
+            return (
+                <>
+                <h2 className="text-center">Наявні кондиціонери</h2><hr /><Link to="/conditioners/add" className="btn btn-primary mx-3" role="button">Додати кондиціонер</Link><table className='table table-striped text-center mt-3' aria-labelledby="tabelLabel">
+                    <thead>
+                        <tr>
+                            <th>Назва</th>
+                            <th>Ціна</th>
+                            <th>Час обслуговування</th>
+                            <th colSpan="2">Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {conditioners.map(conditioner => <tr key={conditioner.ConditionerId}>
+                            <td>{conditioner.ConditionerName}</td>
+                            <td>{conditioner.ConditionerCost}</td>
+                            <td>{conditioner.ServiceTime}</td>
+                            <td><button className="btn btn-outline-dark" onClick={async () => { await this.onRemoveConditioner(conditioner); } }>Видалити</button></td>
+                        </tr>
+                        )}
+                    </tbody>
+                </table>
+                </>
+            );
+        } else {
+            return (
+                <>
+                <h2 className="text-center">Наявні кондиціонери</h2><hr /><table className='table table-striped text-center mt-3' aria-labelledby="tabelLabel">
+                    <thead>
+                        <tr>
+                            <th>Назва</th>
+                            <th>Ціна</th>
+                            <th>Час обслуговування</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {conditioners.map(conditioner => <tr key={conditioner.ConditionerId}>
+                            <td>{conditioner.ConditionerName}</td>
+                            <td>{conditioner.ConditionerCost}</td>
+                            <td>{conditioner.ServiceTime}</td>
+                        </tr>
+                        )}
+                    </tbody>
+                </table>
+                </>
+            );
+        }
     }
 
     async loadData() {
@@ -84,5 +109,19 @@ export class ConditionersList extends Component {
         const data = await response.json();
         console.log(data);
         this.setState({ conditioners: data, loading: false });
+    }
+    async loadUser() {
+        const token = await authService.getAccessToken();
+        const response = await fetch(`api/admin`, {
+            method: "GET",
+            headers: !token ? { 
+                'Content-Type': 'application/json'
+             } : {
+                  'Content-Type': 'application/json',
+                   'Authorization': `Bearer ${token}` 
+                },
+        });
+        const data = await response.json();
+        this.setState({ admin: data});
     }
 }
