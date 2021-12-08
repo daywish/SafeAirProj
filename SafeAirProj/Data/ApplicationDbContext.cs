@@ -19,6 +19,8 @@ namespace SafeAirProj.Data
         }
         public virtual DbSet<Buildings> Buildings { get; set; }
         public virtual DbSet<Conditioners> Conditioners { get; set; }
+        public virtual DbSet<Devices> Devices { get; set; }
+        public virtual DbSet<DevicesHistory> DevicesHistory { get; set; }
         public virtual DbSet<Emploees> Emploees { get; set; }
         public virtual DbSet<Floors> Floors { get; set; }
         public virtual DbSet<Requests> Requests { get; set; }
@@ -44,15 +46,16 @@ namespace SafeAirProj.Data
                 entity.HasKey(e => e.BuildingId)
                     .HasName("PK__Building__5463CDC423ED712C");
 
+                entity.HasIndex(e => e.OwnerId);
+
                 entity.Property(e => e.BuildingAddress)
                     .IsRequired()
-                    .HasMaxLength(100);
+                    .HasMaxLength(100)
+                    .HasDefaultValueSql("(N'')");
 
                 entity.Property(e => e.BuildingName)
                     .IsRequired()
                     .HasMaxLength(100);
-
-                entity.Property(e => e.OwnerId).HasMaxLength(450);
 
                 entity.HasOne(d => d.Owner)
                     .WithMany(p => p.Buildings)
@@ -71,6 +74,37 @@ namespace SafeAirProj.Data
                 entity.Property(e => e.ConditionerName)
                     .IsRequired()
                     .HasMaxLength(100);
+            });
+
+
+            modelBuilder.Entity<Devices>(entity =>
+            {
+                entity.HasKey(e => e.DeviceId)
+                    .HasName("PK__Devices__49E12311C766877D");
+
+                entity.HasIndex(e => e.RoomId)
+                    .HasName("UQ__Devices__328639383009586A")
+                    .IsUnique();
+
+                entity.HasOne(d => d.Room)
+                    .WithOne(p => p.Devices)
+                    .HasForeignKey<Devices>(d => d.RoomId)
+                    .HasConstraintName("FK__Devices__RoomId__2F9A1060");
+            });
+
+            modelBuilder.Entity<DevicesHistory>(entity =>
+            {
+                entity.HasKey(e => e.RecordingId)
+                    .HasName("PK__DevicesH__5CA5A94CCD830D9F");
+
+                entity.HasIndex(e => e.DeviceId);
+
+                entity.Property(e => e.RequestDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Device)
+                    .WithMany(p => p.DevicesHistory)
+                    .HasForeignKey(d => d.DeviceId)
+                    .HasConstraintName("FK__DevicesHi__Devic__32767D0B");
             });
 
             modelBuilder.Entity<Emploees>(entity =>
@@ -92,6 +126,8 @@ namespace SafeAirProj.Data
                 entity.HasKey(e => e.FloorId)
                     .HasName("PK__Floors__49D1E84B3A068695");
 
+                entity.HasIndex(e => e.BuildingId);
+
                 entity.HasOne(d => d.Building)
                     .WithMany(p => p.Floors)
                     .HasForeignKey(d => d.BuildingId)
@@ -103,6 +139,10 @@ namespace SafeAirProj.Data
             {
                 entity.HasKey(e => e.RequestId)
                     .HasName("PK__Requests__33A8517A5586B275");
+
+                entity.HasIndex(e => e.EmploeeId);
+
+                entity.HasIndex(e => e.RoomId);
 
                 entity.HasOne(d => d.Emploee)
                     .WithMany(p => p.Requests)
@@ -122,6 +162,10 @@ namespace SafeAirProj.Data
                 entity.HasKey(e => e.RoomId)
                     .HasName("PK__Rooms__32863939EB548CC0");
 
+                entity.HasIndex(e => e.ConditionerId);
+
+                entity.HasIndex(e => e.FloorId);
+
                 entity.HasOne(d => d.Conditioner)
                     .WithMany(p => p.Rooms)
                     .HasForeignKey(d => d.ConditionerId)
@@ -134,9 +178,6 @@ namespace SafeAirProj.Data
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__Rooms__FloorId__66603565");
             });
-
-            /*OnModelCreating(modelBuilder);*/
         }
-        
     }
 }

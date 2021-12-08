@@ -23,6 +23,7 @@ namespace SafeAirProj.Models
 
         public virtual Conditioners Conditioner { get; set; }
         public virtual Floors Floor { get; set; }
+        public virtual Devices Devices { get; set; }
         public virtual ICollection<Requests> Requests { get; set; }
     }
 }

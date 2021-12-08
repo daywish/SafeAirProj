@@ -35,10 +35,24 @@ namespace SafeAirProj.Controllers
         {
             Floors floor = await _context.Floors.Where(i => i.FloorId == floorId).FirstOrDefaultAsync();
             Buildings building = await _context.Buildings.Where(i => i.BuildingId == floor.BuildingId).FirstOrDefaultAsync();
-            IEnumerable<Rooms> rooms = await _context.Rooms.Where(i => i.FloorId == floorId).ToArrayAsync(); 
+            IEnumerable<Rooms> rooms = await _context.Rooms.Where(i => i.FloorId == floorId).ToArrayAsync();
+            IEnumerable<Devices> devices = new List<Devices>();
+            foreach(var room in rooms)
+            {
+                if(_context.Devices.Where(i=>i.RoomId==room.RoomId).Any()==false)
+                {
+                    Devices newDevice = new Devices()
+                    {
+                        RoomId = room.RoomId
+                    };
+                    _context.Devices.Add(newDevice);
+                    await _context.SaveChangesAsync();
+                }
+            }
             foreach(var item in rooms)
             {
                 item.Conditioner = await _context.Conditioners.FirstOrDefaultAsync(i => i.ConditionerId == item.ConditionerId);
+                item.Devices = await _context.Devices.FirstOrDefaultAsync(i => i.RoomId == item.RoomId);
             }
             RoomsViewModel viewModel = new RoomsViewModel()
             {
